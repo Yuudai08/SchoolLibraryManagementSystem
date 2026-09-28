@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.agents",
+    "\\frontend",
+    "\\frontend\\src",
+    "\\frontend\\src\\pages",
+    "\\frontend\\src\\pages\\loans",
+    "\\src",
+    "\\src\\LibraryManagement.API"
+  ],
+  "SelectedNode": "\\frontend\\src\\pages\\loans\\LoanList.tsx",
+  "PreviewInSolutionExplorer": false
+}
