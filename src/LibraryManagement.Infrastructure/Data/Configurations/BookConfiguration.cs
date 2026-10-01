@@ -32,7 +32,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
             .HasMaxLength(100);
 
         builder.Property(b => b.Description)
-            .HasMaxLength(1000);
+            .HasMaxLength(4000);
 
         builder.Property(b => b.TotalCopies)
             .IsRequired();

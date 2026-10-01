@@ -19,8 +19,43 @@ public class StudentQueryService(ISqlConnectionFactory connectionFactory) : IStu
 
         if (!string.IsNullOrWhiteSpace(searchParams.Search))
         {
-            whereClauses.Add("(s.StudentNumber LIKE @SearchTerm OR s.FirstName LIKE @SearchTerm OR s.LastName LIKE @SearchTerm OR s.Department LIKE @SearchTerm)");
-            parameters.Add("SearchTerm", $"%{searchParams.Search.Trim()}%");
+            var rawSearch = searchParams.Search.Trim();
+            var terms = rawSearch.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            if (terms.Length <= 1)
+            {
+                whereClauses.Add(@"(
+                    s.StudentNumber LIKE @SearchTerm 
+                    OR s.FirstName LIKE @SearchTerm 
+                    OR s.LastName LIKE @SearchTerm 
+                    OR CONCAT(s.FirstName, ' ', s.LastName) LIKE @SearchTerm 
+                    OR CONCAT(s.LastName, ' ', s.FirstName) LIKE @SearchTerm 
+                    OR (s.Email IS NOT NULL AND s.Email LIKE @SearchTerm)
+                    OR (s.Phone IS NOT NULL AND s.Phone LIKE @SearchTerm)
+                    OR (s.Department IS NOT NULL AND s.Department LIKE @SearchTerm)
+                )");
+                parameters.Add("SearchTerm", $"%{rawSearch}%");
+            }
+            else
+            {
+                var multiWordClauses = new List<string>();
+                for (int i = 0; i < terms.Length; i++)
+                {
+                    var paramName = $"Term{i}";
+                    multiWordClauses.Add($@"(
+                        s.StudentNumber LIKE @{paramName} 
+                        OR s.FirstName LIKE @{paramName} 
+                        OR s.LastName LIKE @{paramName} 
+                        OR (s.Email IS NOT NULL AND s.Email LIKE @{paramName})
+                        OR (s.Phone IS NOT NULL AND s.Phone LIKE @{paramName})
+                        OR (s.Department IS NOT NULL AND s.Department LIKE @{paramName})
+                    )");
+                    parameters.Add(paramName, $"%{terms[i]}%");
+                }
+
+                parameters.Add("FullSearchTerm", $"%{rawSearch}%");
+                whereClauses.Add($@"((CONCAT(s.FirstName, ' ', s.LastName) LIKE @FullSearchTerm OR CONCAT(s.LastName, ' ', s.FirstName) LIKE @FullSearchTerm) OR ({string.Join(" AND ", multiWordClauses)}))");
+            }
         }
 
         var whereSql = whereClauses.Count > 0 ? "WHERE " + string.Join(" AND ", whereClauses) : string.Empty;

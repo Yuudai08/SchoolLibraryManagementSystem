@@ -246,4 +246,46 @@ public class BookServiceTests
         _bookRepoMock.Verify(b => b.UpdateAsync(book, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Fact]
+    public void CreateBookRequestValidator_WhenDescriptionExceeds4000Chars_ValidationFails()
+    {
+        var validator = new LibraryManagement.Application.Validators.CreateBookRequestValidator();
+        var request = new CreateBookRequest
+        {
+            Title = "Valid Title",
+            Author = "Valid Author",
+            CategoryId = 1,
+            TotalCopies = 5,
+            AvailableCopies = 5,
+            Description = new string('A', 4001)
+        };
+
+        var result = validator.Validate(request);
+
+        result.IsValid.Should().BeFalse();
+        result.Errors.Should().Contain(e => e.PropertyName == "Description" && e.ErrorMessage.Contains("4,000 characters"));
+    }
+
+    [Fact]
+    public void CreateBookRequestValidator_WhenDescriptionWithin4000Chars_ValidationSucceeds()
+    {
+        var validator = new LibraryManagement.Application.Validators.CreateBookRequestValidator();
+        var request = new CreateBookRequest
+        {
+            Title = "The Metamorphosis",
+            Author = "Franz Kafka",
+            CategoryId = 6,
+            ISBN = "978-1557427663",
+            Publisher = "Classix Press",
+            PublicationYear = 2009,
+            TotalCopies = 14,
+            AvailableCopies = 14,
+            Description = new string('A', 1500)
+        };
+
+        var result = validator.Validate(request);
+
+        result.IsValid.Should().BeTrue();
+    }
 }

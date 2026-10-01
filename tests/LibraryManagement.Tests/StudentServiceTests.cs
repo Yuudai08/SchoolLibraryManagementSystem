@@ -138,4 +138,28 @@ public class StudentServiceTests
         _studentRepoMock.Verify(s => s.DeleteAsync(student, It.IsAny<CancellationToken>()), Times.Once);
         _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Fact]
+    public async Task SearchAsync_DelegatesToStudentQueryService()
+    {
+        var searchParams = new StudentSearchParams { Search = "Bisesh Pandey", Page = 1, PageSize = 10 };
+        var expectedResult = new LibraryManagement.Application.DTOs.Common.PagedResult<StudentListResponse>
+        {
+            Items = new List<StudentListResponse>
+            {
+                new() { StudentId = 9, StudentNumber = "STU-2024-009", FirstName = "Bisesh", LastName = "Pandey" }
+            },
+            TotalCount = 1,
+            Page = 1,
+            PageSize = 10
+        };
+
+        _studentQueryMock.Setup(q => q.SearchStudentsAsync(searchParams, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expectedResult);
+
+        var result = await _sut.SearchAsync(searchParams);
+
+        result.Should().BeEquivalentTo(expectedResult);
+        _studentQueryMock.Verify(q => q.SearchStudentsAsync(searchParams, It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

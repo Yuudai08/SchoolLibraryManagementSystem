@@ -9,3 +9,4 @@ D:\SchoolLibrary\src\LibraryManagement.Domain\obj\Debug\net10.0\LibraryManagemen
 D:\SchoolLibrary\src\LibraryManagement.Domain\obj\Debug\net10.0\refint\LibraryManagement.Domain.dll
 D:\SchoolLibrary\src\LibraryManagement.Domain\obj\Debug\net10.0\LibraryManagement.Domain.pdb
 D:\SchoolLibrary\src\LibraryManagement.Domain\obj\Debug\net10.0\ref\LibraryManagement.Domain.dll
+D:\SchoolLibrary\src\LibraryManagement.Domain\obj\Debug\net10.0\LibraryManagement.Domain.sourcelink.json

@@ -52,7 +52,7 @@
               "RelativeDocumentMoniker": "frontend\\src\\pages\\Login.tsx",
               "ToolTip": "D:\\SchoolLibrary\\frontend\\src\\pages\\Login.tsx",
               "RelativeToolTip": "frontend\\src\\pages\\Login.tsx",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAAAH4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAH4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
               "WhenOpened": "2026-09-28T10:34:11.978Z",
               "EditorCaption": ""
@@ -67,8 +67,7 @@
               "RelativeToolTip": "frontend\\src\\pages\\Dashboard.tsx",
               "ViewState": "AgIAAMsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-09-28T10:34:08.024Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-28T10:34:08.024Z"
             },
             {
               "$type": "Document",
@@ -80,8 +79,7 @@
               "RelativeToolTip": "frontend\\src\\pages\\loans\\LoanList.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAG8AAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2026-09-28T10:32:51.282Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-28T10:32:51.282Z"
             },
             {
               "$type": "Document",
@@ -93,8 +91,7 @@
               "RelativeToolTip": ".agents\\AGENTS.md",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-09-28T10:30:54.481Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-28T10:30:54.481Z"
             },
             {
               "$type": "Document",
@@ -106,8 +103,7 @@
               "RelativeToolTip": "implementation_plan.md",
               "ViewState": "AgIAABwBAAAAAAAAAAAAAN4AAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-09-28T06:12:46.022Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-28T06:12:46.022Z"
             },
             {
               "$type": "Document",
@@ -119,8 +115,7 @@
               "RelativeToolTip": "src\\LibraryManagement.API\\LibraryManagement.API.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2026-09-28T05:45:46.891Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-28T05:45:46.891Z"
             },
             {
               "$type": "Document",
@@ -132,8 +127,7 @@
               "RelativeToolTip": "src\\LibraryManagement.API\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGQAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-23T04:45:01.871Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-23T04:45:01.871Z"
             }
           ]
         }

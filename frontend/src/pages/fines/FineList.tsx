@@ -8,6 +8,7 @@ import { formatDate, formatCurrency } from '../../utils/formatters';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
 import { Spinner } from '../../components/common/Spinner';
+import { TableSkeleton } from '../../components/common/Skeleton';
 import { EmptyState } from '../../components/common/EmptyState';
 import { Modal } from '../../components/common/Modal';
 import { getErrorMessage } from '../../api/client';
@@ -38,37 +39,37 @@ export const FineList: React.FC = () => {
   const totalOutstanding = fines?.filter(f => !f.isPaid).reduce((acc, f) => acc + f.amount, 0) || 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-200">
       {/* Overview Banner */}
-      <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white rounded-2xl p-6 border border-stone-200/90 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-5">
         <div className="flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-purple-50 text-purple-600 border border-purple-100">
-            <Coins className="w-6 h-6" />
+          <div className="p-3.5 rounded-xl bg-violet-50 text-violet-700 border border-violet-200/80 shadow-soft">
+            <Coins className="w-6 h-6 stroke-[1.8]" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <p className="text-xs font-semibold text-stone-500 tracking-tight">
               {unpaidOnly ? 'Current Unpaid Fines' : 'Total Outstanding in View'}
             </p>
-            <h3 className="text-2xl font-bold text-slate-900 mt-0.5">
+            <h3 className="text-2xl font-bold text-stone-900 mt-0.5 font-mono tabular-nums tracking-tight">
               {formatCurrency(totalOutstanding)}
             </h3>
           </div>
         </div>
 
         {/* Filter Toggle */}
-        <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg">
+        <div className="flex items-center gap-1.5 bg-stone-100/80 p-1.5 rounded-xl border border-stone-200/60">
           <button
             onClick={() => setUnpaidOnly(true)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-              unpaidOnly ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              unpaidOnly ? 'bg-white text-stone-900 shadow-soft' : 'text-stone-600 hover:text-stone-900'
             }`}
           >
             Unpaid Fines Only
           </button>
           <button
             onClick={() => setUnpaidOnly(false)}
-            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-              !unpaidOnly ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              !unpaidOnly ? 'bg-white text-stone-900 shadow-soft' : 'text-stone-600 hover:text-stone-900'
             }`}
           >
             All Fines History
@@ -77,23 +78,23 @@ export const FineList: React.FC = () => {
       </div>
 
       {/* Fines Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200/90 shadow-card overflow-hidden">
         {isLoading ? (
-          <Spinner size="lg" label="Loading fine records..." className="h-64" />
+          <TableSkeleton rows={8} cols={6} />
         ) : !fines || fines.length === 0 ? (
           <EmptyState
             icon={CircleDollarSign}
             title={unpaidOnly ? 'No Unpaid Fines' : 'No Fine Records Found'}
             description={
               unpaidOnly
-                ? 'Great news! All library loans are in good standing with zero overdue penalties pending.'
+                ? 'All library patrons are currently in good standing with zero overdue penalties pending.'
                 : 'No fine records exist in the system.'
             }
           />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-600 font-semibold uppercase tracking-wider border-b border-slate-200">
+              <thead className="bg-stone-50/70 text-stone-600 font-semibold tracking-tight border-b border-stone-200/80">
                 <tr>
                   <th className="px-5 py-3">Fine ID</th>
                   <th className="px-5 py-3">Student Patron</th>
@@ -104,23 +105,23 @@ export const FineList: React.FC = () => {
                   <th className="px-5 py-3 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-700">
+              <tbody className="divide-y divide-stone-100 text-stone-700">
                 {fines.map((fine) => (
-                  <tr key={fine.fineId} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="px-5 py-3.5 font-mono text-slate-500">
+                  <tr key={fine.fineId} className="hover:bg-stone-50/60 transition-colors">
+                    <td className="px-5 py-3.5 font-mono tabular-nums text-stone-400">
                       #{fine.fineId}
                     </td>
                     <td className="px-5 py-3.5">
-                      <p className="font-semibold text-slate-900">{fine.studentName}</p>
-                      <p className="text-slate-400 font-mono text-[11px]">{fine.studentNumber}</p>
+                      <p className="font-bold text-stone-900 tracking-tight">{fine.studentName}</p>
+                      <p className="text-stone-400 font-mono tabular-nums text-[11px]">{fine.studentNumber}</p>
                     </td>
-                    <td className="px-5 py-3.5 text-slate-700 font-medium">
+                    <td className="px-5 py-3.5 text-stone-700 font-medium">
                       {fine.bookTitle}
                     </td>
-                    <td className="px-5 py-3.5 font-bold text-slate-900">
+                    <td className="px-5 py-3.5 font-bold text-stone-900 font-mono tabular-nums text-sm">
                       {formatCurrency(fine.amount)}
                     </td>
-                    <td className="px-5 py-3.5 text-slate-500">
+                    <td className="px-5 py-3.5 text-stone-500 font-mono tabular-nums text-[11px]">
                       {formatDate(fine.createdAt)}
                     </td>
                     <td className="px-5 py-3.5">
@@ -128,7 +129,7 @@ export const FineList: React.FC = () => {
                         {fine.isPaid ? 'Paid' : 'Unpaid Penalty'}
                       </Badge>
                       {fine.paidDate && (
-                        <p className="text-[10px] text-slate-400 mt-0.5">
+                        <p className="text-[10px] text-stone-400 mt-0.5 font-mono tabular-nums">
                           Paid on {formatDate(fine.paidDate)}
                         </p>
                       )}

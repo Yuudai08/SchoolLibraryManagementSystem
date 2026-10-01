@@ -23,14 +23,14 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none';
+  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-150 ease-out active:scale-[0.98] active:translate-y-[0.5px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 disabled:active:translate-y-0 select-none cursor-pointer tracking-tight';
 
   const variantStyles: Record<ButtonVariant, string> = {
-    primary: 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm focus:ring-indigo-500',
-    secondary: 'bg-slate-800 hover:bg-slate-900 text-white shadow-sm focus:ring-slate-700',
-    danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-sm focus:ring-rose-500',
-    outline: 'border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 focus:ring-indigo-500 shadow-sm',
-    ghost: 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:ring-slate-400',
+    primary: 'bg-brand-900 hover:bg-brand-950 text-white shadow-soft hover:shadow-card focus-visible:ring-brand-500 border border-brand-800/40',
+    secondary: 'bg-stone-800 hover:bg-stone-900 text-white shadow-soft focus-visible:ring-stone-600 border border-stone-700/50',
+    danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-soft focus-visible:ring-rose-500 border border-rose-700/50',
+    outline: 'border border-stone-300/90 bg-white hover:bg-stone-50/80 text-stone-700 focus-visible:ring-brand-500 shadow-soft',
+    ghost: 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/80 focus-visible:ring-stone-400',
   };
 
   const sizeStyles: Record<ButtonSize, string> = {

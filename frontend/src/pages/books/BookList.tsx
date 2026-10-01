@@ -10,6 +10,7 @@ import { SearchInput } from '../../components/common/SearchInput';
 import { Badge } from '../../components/common/Badge';
 import { Pagination } from '../../components/common/Pagination';
 import { Spinner } from '../../components/common/Spinner';
+import { TableSkeleton } from '../../components/common/Skeleton';
 import { EmptyState } from '../../components/common/EmptyState';
 import { ConfirmDialog } from '../../components/common/ConfirmDialog';
 import { BookModal } from './BookModal';
@@ -98,7 +99,7 @@ export const BookList: React.FC = () => {
                 setSelectedCategory(e.target.value);
                 setPage(1);
               }}
-              className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full bg-white border border-stone-300/80 rounded-lg px-3 py-2 text-sm text-stone-800 shadow-soft focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-600"
             >
               <option value="">All Categories</option>
               {categories?.map((c) => (
@@ -121,17 +122,17 @@ export const BookList: React.FC = () => {
       </div>
 
       {/* Books Table Card */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200/90 shadow-card overflow-hidden">
         {isLoading ? (
-          <Spinner size="lg" label="Loading books catalog..." className="h-64" />
+          <TableSkeleton rows={8} cols={6} />
         ) : !pagedBooks || pagedBooks.items.length === 0 ? (
           <EmptyState
             icon={BookOpen}
             title="No Books Found"
             description={
               search || selectedCategory
-                ? 'No books matched your search or category filter. Try clearing filters.'
-                : 'Your library catalog is empty. Start adding books to track inventory and loans.'
+                ? 'No catalog titles matched your active search or category filter. Try clearing filters.'
+                : 'Your library catalog is empty. Start adding books to track inventory, shelves, and loans.'
             }
             actionText="Add First Book"
             onAction={handleOpenAdd}
@@ -140,7 +141,7 @@ export const BookList: React.FC = () => {
           <>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50/80 text-slate-600 font-semibold uppercase tracking-wider border-b border-slate-200">
+                <thead className="bg-stone-50/70 text-stone-600 font-semibold tracking-tight border-b border-stone-200/80">
                   <tr>
                     <th className="px-5 py-3">Book Info</th>
                     <th className="px-5 py-3">Category</th>
@@ -150,30 +151,30 @@ export const BookList: React.FC = () => {
                     <th className="px-5 py-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-700">
+                <tbody className="divide-y divide-stone-100 text-stone-700">
                   {pagedBooks.items.map((book) => {
                     const isOutOfStock = book.availableCopies === 0;
                     const isLowStock = book.availableCopies > 0 && book.availableCopies <= 2;
 
                     return (
-                      <tr key={book.bookId} className="hover:bg-slate-50/60 transition-colors">
+                      <tr key={book.bookId} className="hover:bg-stone-50/60 transition-colors">
                         <td className="px-5 py-3.5">
-                          <p className="font-semibold text-slate-900 text-sm">{book.title}</p>
-                          <p className="text-slate-500 text-xs">{book.author}</p>
+                          <p className="font-bold text-stone-900 text-sm tracking-tight">{book.title}</p>
+                          <p className="text-stone-500 text-xs mt-0.5">{book.author}</p>
                         </td>
                         <td className="px-5 py-3.5">
-                          <span className="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md text-xs font-medium border border-slate-200">
+                          <span className="bg-stone-100/90 text-stone-700 px-2.5 py-1 rounded-md text-xs font-medium border border-stone-200/80">
                             {book.categoryName}
                           </span>
                         </td>
-                        <td className="px-5 py-3.5 font-mono text-slate-500">
+                        <td className="px-5 py-3.5 font-mono tabular-nums text-stone-500">
                           {book.isbn || '—'}
                         </td>
                         <td className="px-5 py-3.5">
-                          <span className="font-semibold text-slate-900 font-mono text-xs">
+                          <span className="font-bold text-stone-900 font-mono tabular-nums text-xs">
                             {book.availableCopies}
                           </span>
-                          <span className="text-slate-400 font-mono text-xs"> / {book.totalCopies} copies</span>
+                          <span className="text-stone-400 font-mono tabular-nums text-xs"> / {book.totalCopies} copies</span>
                         </td>
                         <td className="px-5 py-3.5">
                           <Badge
@@ -186,14 +187,14 @@ export const BookList: React.FC = () => {
                           <div className="flex items-center justify-end gap-1.5">
                             <button
                               onClick={() => handleOpenEdit(book)}
-                              className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                              className="p-1.5 text-stone-400 hover:text-brand-700 hover:bg-brand-50/70 rounded-lg transition-colors cursor-pointer"
                               title="Edit Book"
                             >
                               <Edit2 className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => setBookToDelete(book)}
-                              className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                              className="p-1.5 text-stone-400 hover:text-rose-600 hover:bg-rose-50/70 rounded-lg transition-colors cursor-pointer"
                               title="Delete Book"
                             >
                               <Trash2 className="w-4 h-4" />

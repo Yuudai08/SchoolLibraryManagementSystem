@@ -22,6 +22,12 @@ public class GlobalExceptionHandler(
             NotFoundException => (StatusCodes.Status404NotFound, "Resource Not Found", LogLevel.Warning),
             ConflictException => (StatusCodes.Status409Conflict, "Conflict", LogLevel.Warning),
             DbUpdateConcurrencyException => (StatusCodes.Status409Conflict, "Concurrency Conflict", LogLevel.Warning),
+            DbUpdateException dbEx when dbEx.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627)
+                => (StatusCodes.Status409Conflict, "Duplicate Record", LogLevel.Warning),
+            DbUpdateException dbEx when dbEx.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx && (sqlEx.Number == 2628 || sqlEx.Number == 8152)
+                => (StatusCodes.Status400BadRequest, "Data Truncation", LogLevel.Warning),
+            DbUpdateException dbEx when dbEx.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx && sqlEx.Number == 547
+                => (StatusCodes.Status400BadRequest, "Invalid Reference", LogLevel.Warning),
             BadRequestException => (StatusCodes.Status400BadRequest, "Bad Request", LogLevel.Warning),
             UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized", LogLevel.Warning),
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error", LogLevel.Error)
@@ -57,9 +63,25 @@ public class GlobalExceptionHandler(
         }
         else
         {
-            var detail = statusCode == StatusCodes.Status500InternalServerError
-                ? "An unexpected error occurred. Please try again later."
-                : exception.Message;
+            string detail;
+            if (exception is DbUpdateException dbEx && dbEx.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx)
+            {
+                detail = sqlEx.Number switch
+                {
+                    2601 or 2627 => "A record with matching unique information (such as ISBN, Email, or Name) already exists.",
+                    2628 or 8152 => "One or more text fields exceed the maximum allowed length.",
+                    547 => "The specified category or related entity does not exist.",
+                    _ => "A database constraint error occurred while saving changes."
+                };
+            }
+            else if (statusCode == StatusCodes.Status500InternalServerError)
+            {
+                detail = "An unexpected error occurred. Please try again later.";
+            }
+            else
+            {
+                detail = exception.Message;
+            }
 
             problemDetails = new ProblemDetails
             {

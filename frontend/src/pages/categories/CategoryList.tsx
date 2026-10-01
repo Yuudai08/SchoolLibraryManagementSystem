@@ -9,6 +9,7 @@ import { Input } from '../../components/common/Input';
 import { Modal } from '../../components/common/Modal';
 import { ConfirmDialog } from '../../components/common/ConfirmDialog';
 import { Spinner } from '../../components/common/Spinner';
+import { TableSkeleton } from '../../components/common/Skeleton';
 import { EmptyState } from '../../components/common/EmptyState';
 import { getErrorMessage } from '../../api/client';
 
@@ -99,15 +100,15 @@ export const CategoryList: React.FC = () => {
   const isSaving = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-200">
       {/* Action Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-slate-800">
-            Book Genres & Classification ({categories?.length || 0})
+          <h3 className="text-base font-bold text-stone-900 tracking-tight">
+            Classification & Subject Categories ({categories?.length || 0})
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Organize catalog titles into searchable departments and subjects
+          <p className="text-xs text-stone-500 mt-0.5">
+            Organize catalog inventory into academic departments and subject genres
           </p>
         </div>
 
@@ -122,48 +123,48 @@ export const CategoryList: React.FC = () => {
       </div>
 
       {/* Categories Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200/90 shadow-card overflow-hidden">
         {isLoading ? (
-          <Spinner size="lg" label="Loading categories..." className="h-64" />
+          <TableSkeleton rows={6} cols={4} />
         ) : !categories || categories.length === 0 ? (
           <EmptyState
             icon={Tags}
             title="No Categories Found"
-            description="Create categories like Computer Science, Fiction, Mathematics to classify your books."
+            description="Create categories like Computer Science, Literature, Mathematics to classify your books."
             actionText="Add Category"
             onAction={handleOpenAdd}
           />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50/80 text-slate-600 font-semibold uppercase tracking-wider border-b border-slate-200">
+              <thead className="bg-stone-50/70 text-stone-600 font-semibold tracking-tight border-b border-stone-200/80">
                 <tr>
                   <th className="px-5 py-3">Category Name</th>
                   <th className="px-5 py-3">Description</th>
-                  <th className="px-5 py-3">Catalog Books</th>
+                  <th className="px-5 py-3">Catalog Titles</th>
                   <th className="px-5 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-700">
+              <tbody className="divide-y divide-stone-100 text-stone-700">
                 {categories.map((category) => (
-                  <tr key={category.categoryId} className="hover:bg-slate-50/60 transition-colors">
-                    <td className="px-5 py-3.5 font-bold text-slate-900">
+                  <tr key={category.categoryId} className="hover:bg-stone-50/60 transition-colors">
+                    <td className="px-5 py-3.5 font-bold text-stone-900">
                       {category.name}
                     </td>
-                    <td className="px-5 py-3.5 text-slate-500 max-w-md truncate">
+                    <td className="px-5 py-3.5 text-stone-500 max-w-md truncate">
                       {category.description || '—'}
                     </td>
                     <td className="px-5 py-3.5">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
-                        <BookOpen className="w-3 h-3" />
-                        {category.bookCount} books
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-brand-50 text-brand-800 border border-brand-200/80">
+                        <BookOpen className="w-3.5 h-3.5 stroke-[1.8]" />
+                        <span className="font-mono tabular-nums">{category.bookCount}</span> books
                       </span>
                     </td>
                     <td className="px-5 py-3.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleOpenEdit(category)}
-                          className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                          className="p-1.5 text-stone-400 hover:text-brand-700 hover:bg-brand-50/70 rounded-lg transition-colors cursor-pointer"
                           title="Edit Category"
                         >
                           <Edit2 className="w-4 h-4" />
@@ -176,10 +177,10 @@ export const CategoryList: React.FC = () => {
                             }
                             setDeletingCategory(category);
                           }}
-                          className={`p-1.5 rounded-lg transition-colors ${
+                          className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                             category.bookCount > 0
-                              ? 'text-slate-300 cursor-not-allowed'
-                              : 'text-slate-500 hover:text-rose-600 hover:bg-rose-50'
+                              ? 'text-stone-300 cursor-not-allowed'
+                              : 'text-stone-400 hover:text-rose-600 hover:bg-rose-50/70'
                           }`}
                           title={
                             category.bookCount > 0

@@ -19,8 +19,27 @@ public class BookQueryService(ISqlConnectionFactory connectionFactory) : IBookQu
 
         if (!string.IsNullOrWhiteSpace(searchParams.Search))
         {
-            whereClauses.Add("(b.Title LIKE @SearchTerm OR b.Author LIKE @SearchTerm OR b.ISBN LIKE @SearchTerm)");
-            parameters.Add("SearchTerm", $"%{searchParams.Search.Trim()}%");
+            var rawSearch = searchParams.Search.Trim();
+            var terms = rawSearch.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            if (terms.Length <= 1)
+            {
+                whereClauses.Add("(b.Title LIKE @SearchTerm OR b.Author LIKE @SearchTerm OR b.ISBN LIKE @SearchTerm)");
+                parameters.Add("SearchTerm", $"%{rawSearch}%");
+            }
+            else
+            {
+                var multiWordClauses = new List<string>();
+                for (int i = 0; i < terms.Length; i++)
+                {
+                    var paramName = $"Term{i}";
+                    multiWordClauses.Add($"(b.Title LIKE @{paramName} OR b.Author LIKE @{paramName} OR b.ISBN LIKE @{paramName})");
+                    parameters.Add(paramName, $"%{terms[i]}%");
+                }
+
+                parameters.Add("FullSearchTerm", $"%{rawSearch}%");
+                whereClauses.Add($@"((b.Title LIKE @FullSearchTerm OR b.Author LIKE @FullSearchTerm) OR ({string.Join(" AND ", multiWordClauses)}))");
+            }
         }
 
         if (searchParams.CategoryId.HasValue && searchParams.CategoryId.Value > 0)

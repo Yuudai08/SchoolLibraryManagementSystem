@@ -176,6 +176,7 @@ export const BookModal: React.FC<BookModalProps> = ({
           <div>
             <Input
               label="ISBN"
+              maxLength={20}
               placeholder="e.g. 978-0134494166"
               value={isbn}
               onChange={(e) => setIsbn(e.target.value)}
@@ -185,6 +186,7 @@ export const BookModal: React.FC<BookModalProps> = ({
           <div>
             <Input
               label="Publisher"
+              maxLength={100}
               placeholder="e.g. Prentice Hall"
               value={publisher}
               onChange={(e) => setPublisher(e.target.value)}
@@ -195,6 +197,8 @@ export const BookModal: React.FC<BookModalProps> = ({
             <Input
               label="Publication Year"
               type="number"
+              min={1000}
+              max={2100}
               placeholder="e.g. 2017"
               value={publicationYear}
               onChange={(e) => setPublicationYear(e.target.value ? Number(e.target.value) : '')}
@@ -227,15 +231,21 @@ export const BookModal: React.FC<BookModalProps> = ({
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-            Book Description / Synopsis
-          </label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="block text-xs font-semibold text-stone-700 tracking-tight">
+              Book Description / Synopsis
+            </label>
+            <span className={`text-[11px] font-mono tabular-nums ${description.length > 3900 ? 'text-amber-600 font-semibold' : 'text-stone-400'}`}>
+              {description.length} / 4000
+            </span>
+          </div>
           <textarea
-            rows={3}
+            rows={4}
+            maxLength={4000}
             placeholder="Brief summary or subject notes about this book..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="block w-full rounded-lg border border-slate-300 text-sm text-slate-900 p-2.5 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            className="block w-full rounded-lg border border-stone-300/80 text-sm text-stone-900 p-2.5 focus:border-brand-600 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all shadow-soft placeholder:text-stone-400"
           />
         </div>
 

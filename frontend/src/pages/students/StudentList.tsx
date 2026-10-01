@@ -10,6 +10,7 @@ import { SearchInput } from '../../components/common/SearchInput';
 import { Badge } from '../../components/common/Badge';
 import { Pagination } from '../../components/common/Pagination';
 import { Spinner } from '../../components/common/Spinner';
+import { TableSkeleton } from '../../components/common/Skeleton';
 import { EmptyState } from '../../components/common/EmptyState';
 import { ConfirmDialog } from '../../components/common/ConfirmDialog';
 import { StudentModal } from './StudentModal';
@@ -104,16 +105,16 @@ export const StudentList: React.FC = () => {
       </div>
 
       {/* Table Card */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200/90 shadow-card overflow-hidden">
         {isLoading ? (
-          <Spinner size="lg" label="Loading student directory..." className="h-64" />
+          <TableSkeleton rows={8} cols={6} />
         ) : !pagedStudents || pagedStudents.items.length === 0 ? (
           <EmptyState
             icon={Users}
             title="No Students Found"
             description={
               search
-                ? 'No students matched your search criteria.'
+                ? 'No student patrons matched your search criteria.'
                 : 'No student patrons registered yet. Add students to enable book checkouts.'
             }
             actionText="Register First Student"
@@ -123,7 +124,7 @@ export const StudentList: React.FC = () => {
           <>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50/80 text-slate-600 font-semibold uppercase tracking-wider border-b border-slate-200">
+                <thead className="bg-stone-50/70 text-stone-600 font-semibold tracking-tight border-b border-stone-200/80">
                   <tr>
                     <th className="px-5 py-3">Student ID</th>
                     <th className="px-5 py-3">Full Name</th>
@@ -133,23 +134,23 @@ export const StudentList: React.FC = () => {
                     <th className="px-5 py-3 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-700">
+                <tbody className="divide-y divide-stone-100 text-stone-700">
                   {pagedStudents.items.map((student) => (
-                    <tr key={student.studentId} className="hover:bg-slate-50/60 transition-colors">
-                      <td className="px-5 py-3.5 font-mono text-slate-800 font-medium">
+                    <tr key={student.studentId} className="hover:bg-stone-50/60 transition-colors">
+                      <td className="px-5 py-3.5 font-mono tabular-nums text-stone-900 font-semibold">
                         {student.studentNumber}
                       </td>
-                      <td className="px-5 py-3.5 font-semibold text-slate-900 text-sm">
+                      <td className="px-5 py-3.5 font-bold text-stone-900 text-sm tracking-tight">
                         {student.fullName}
                       </td>
-                      <td className="px-5 py-3.5 text-slate-600">
+                      <td className="px-5 py-3.5 text-stone-600">
                         {student.department || '—'}
                       </td>
                       <td className="px-5 py-3.5">
-                        <span className="font-semibold text-slate-900 font-mono">
+                        <span className="font-bold text-stone-900 font-mono tabular-nums">
                           {student.activeLoanCount}
                         </span>
-                        <span className="text-slate-400 font-mono"> / 5</span>
+                        <span className="text-stone-400 font-mono tabular-nums"> / 5</span>
                       </td>
                       <td className="px-5 py-3.5">
                         <Badge variant={student.isActive ? 'success' : 'danger'}>
@@ -160,21 +161,21 @@ export const StudentList: React.FC = () => {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleOpenHistory(student)}
-                            className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                            className="p-1.5 text-stone-400 hover:text-brand-700 hover:bg-brand-50/70 rounded-lg transition-colors cursor-pointer"
                             title="View Loan History"
                           >
                             <History className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleOpenEdit(student)}
-                            className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                            className="p-1.5 text-stone-400 hover:text-brand-700 hover:bg-brand-50/70 rounded-lg transition-colors cursor-pointer"
                             title="Edit Student"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => setStudentToDelete(student)}
-                            className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            className="p-1.5 text-stone-400 hover:text-rose-600 hover:bg-rose-50/70 rounded-lg transition-colors cursor-pointer"
                             title="Delete Student"
                           >
                             <Trash2 className="w-4 h-4" />

@@ -16,6 +16,7 @@ import {
 import { dashboardApi } from '../api/services';
 import { formatDate, formatCurrency } from '../utils/formatters';
 import { Spinner } from '../components/common/Spinner';
+import { KpiCardSkeleton } from '../components/common/Skeleton';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
 export const Dashboard: React.FC = () => {
@@ -35,106 +36,121 @@ export const Dashboard: React.FC = () => {
   });
 
   if (summaryLoading) {
-    return <Spinner size="lg" label="Loading dashboard metrics..." className="h-96" />;
+    return (
+      <div className="space-y-8 animate-in fade-in duration-200">
+        <div className="h-28 bg-stone-200/60 rounded-2xl animate-pulse" />
+        <KpiCardSkeleton />
+      </div>
+    );
   }
 
   const kpis = [
     {
-      title: 'Total Book Titles',
+      title: 'Total Catalog Titles',
       value: summary?.totalBooks ?? 0,
-      subtext: `${summary?.totalCopies ?? 0} total copies in library`,
+      subtext: `${summary?.totalCopies ?? 0} total physical copies`,
       icon: BookOpen,
-      color: 'bg-indigo-50 text-indigo-600 border-indigo-100',
+      color: 'bg-brand-50 text-brand-700 border-brand-200/80',
     },
     {
       title: 'Available Copies',
       value: summary?.availableCopies ?? 0,
-      subtext: `${summary?.borrowedCopies ?? 0} copies currently borrowed`,
+      subtext: `${summary?.borrowedCopies ?? 0} currently on loan`,
       icon: BookmarkCheck,
-      color: 'bg-emerald-50 text-emerald-600 border-emerald-100',
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
     },
     {
-      title: 'Registered Students',
+      title: 'Enrolled Patrons',
       value: summary?.totalStudents ?? 0,
-      subtext: 'Active student patrons',
+      subtext: 'Active student accounts',
       icon: Users,
-      color: 'bg-blue-50 text-blue-600 border-blue-100',
+      color: 'bg-sky-50 text-sky-700 border-sky-200/80',
     },
     {
       title: 'Active Loans',
       value: summary?.activeLoans ?? 0,
       subtext: 'Books currently checked out',
       icon: Clock,
-      color: 'bg-amber-50 text-amber-600 border-amber-100',
+      color: 'bg-amber-50 text-amber-700 border-amber-200/80',
     },
     {
       title: 'Overdue Loans',
       value: summary?.overdueLoans ?? 0,
       subtext: 'Past due return date',
       icon: AlertCircle,
-      color: 'bg-rose-50 text-rose-600 border-rose-100',
+      color: 'bg-rose-50 text-rose-700 border-rose-200/80',
+      urgent: (summary?.overdueLoans ?? 0) > 0,
     },
     {
-      title: 'Unpaid Fines',
+      title: 'Pending Fines',
       value: formatCurrency(summary?.unpaidFines ?? 0),
-      subtext: 'Pending collection',
+      subtext: 'Uncollected penalties',
       icon: Coins,
-      color: 'bg-purple-50 text-purple-600 border-purple-100',
+      color: 'bg-violet-50 text-violet-700 border-violet-200/80',
     },
   ];
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-200">
-      {/* Top Banner / Quick Action Bar */}
-      <div className="bg-linear-to-r from-slate-900 to-indigo-950 rounded-2xl p-6 text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-slate-800">
-        <div>
-          <h2 className="text-xl font-bold tracking-tight">Circulation Desk Ready</h2>
-          <p className="text-xs text-slate-300 mt-1 max-w-xl">
-            Quickly lookup students, check out books, process returns with instant overdue fine calculation.
+    <div className="space-y-7 animate-in fade-in duration-200">
+      {/* Top Academic Command Banner */}
+      <div className="bg-[#0c1a2c] rounded-2xl p-6 text-white shadow-card border border-[#19304e] flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative overflow-hidden">
+        <div className="absolute right-0 top-0 w-80 h-full bg-brand-500/10 blur-2xl pointer-events-none" />
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[11px] font-mono text-brand-200 tracking-wider">CIRCULATION READY</span>
+          </div>
+          <h2 className="text-xl font-bold tracking-tight text-white">Daily Desk & Patron Operations</h2>
+          <p className="text-xs text-stone-300 mt-1 max-w-xl leading-relaxed">
+            Rapid student checkout, book returns, and instant fine reconciliation are primed for the active school session.
           </p>
         </div>
         <Link
           to="/circulation"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold shadow-md transition-all shrink-0"
+          className="relative z-10 inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-semibold shadow-soft hover:shadow-card transition-all shrink-0 cursor-pointer active:scale-[0.98]"
         >
-          <ArrowLeftRight className="w-4 h-4" />
-          <span>Open Circulation Desk</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowLeftRight className="w-4 h-4 stroke-[1.8]" />
+          <span>Launch Circulation Desk</span>
+          <ArrowRight className="w-3.5 h-3.5 stroke-[1.8]" />
         </Link>
       </div>
 
-      {/* KPI Cards Grid */}
+      {/* KPI Bento Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {kpis.map((kpi, idx) => {
           const Icon = kpi.icon;
           return (
             <div
               key={idx}
-              className="bg-white rounded-xl p-5 border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-200 flex items-start justify-between"
+              className={`bg-white rounded-xl p-5 border shadow-soft hover:shadow-card transition-all duration-200 flex items-start justify-between ${
+                kpi.urgent ? 'border-rose-300/80 bg-rose-50/20 ring-1 ring-rose-200/50' : 'border-stone-200/90'
+              }`}
             >
               <div>
-                <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">{kpi.title}</p>
-                <h3 className="text-2xl font-bold text-slate-900 mt-1.5">{kpi.value}</h3>
-                <p className="text-xs text-slate-500 mt-1">{kpi.subtext}</p>
+                <p className="text-[11px] font-semibold text-stone-500 tracking-tight">{kpi.title}</p>
+                <h3 className="text-2xl font-bold text-stone-900 mt-1.5 font-mono tabular-nums tracking-tight">
+                  {kpi.value}
+                </h3>
+                <p className="text-xs text-stone-500 mt-1">{kpi.subtext}</p>
               </div>
-              <div className={`p-3 rounded-xl border ${kpi.color}`}>
-                <Icon className="w-5 h-5" />
+              <div className={`p-3 rounded-xl border ${kpi.color} shadow-soft`}>
+                <Icon className="w-5 h-5 stroke-[1.8]" />
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Charts & Tables Section */}
+      {/* Analytics & Activity Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Popular Books Chart */}
-        <div className="lg:col-span-6 bg-white rounded-xl p-6 border border-slate-200/80 shadow-xs flex flex-col">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="lg:col-span-6 bg-white rounded-xl p-6 border border-stone-200/90 shadow-soft flex flex-col">
+          <div className="flex items-center justify-between pb-4 border-b border-stone-100">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-indigo-600" />
-              <h3 className="text-sm font-semibold text-slate-900">Most Popular Books</h3>
+              <TrendingUp className="w-4 h-4 text-brand-700 stroke-[1.8]" />
+              <h3 className="text-sm font-bold text-stone-900 tracking-tight">Most Circulated Titles</h3>
             </div>
-            <Link to="/reports" className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">
+            <Link to="/reports" className="text-xs text-brand-700 hover:text-brand-900 font-semibold tracking-tight transition-colors">
               View Analytics &rarr;
             </Link>
           </div>
@@ -143,7 +159,7 @@ export const Dashboard: React.FC = () => {
             {booksLoading ? (
               <Spinner size="sm" />
             ) : !popularBooks || popularBooks.length === 0 ? (
-              <p className="text-xs text-slate-400">No circulation data recorded yet.</p>
+              <p className="text-xs text-stone-400">No circulation data recorded yet.</p>
             ) : (
               <div className="w-full h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -154,14 +170,14 @@ export const Dashboard: React.FC = () => {
                     }))}
                     margin={{ top: 10, right: 10, left: -20, bottom: 20 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#64748b' }} interval={0} angle={-15} textAnchor="end" />
-                    <YAxis tick={{ fontSize: 11, fill: '#64748b' }} allowDecimals={false} />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f4" />
+                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#78716c' }} interval={0} angle={-15} textAnchor="end" />
+                    <YAxis tick={{ fontSize: 11, fill: '#78716c' }} allowDecimals={false} />
                     <Tooltip
-                      contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', borderRadius: '8px', color: '#fff', fontSize: '12px' }}
-                      itemStyle={{ color: '#818cf8' }}
+                      contentStyle={{ backgroundColor: '#0c1a2c', borderColor: '#19304e', borderRadius: '10px', color: '#fff', fontSize: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }}
+                      itemStyle={{ color: '#95bede' }}
                     />
-                    <Bar dataKey="loans" name="Total Loans" fill="#4f46e5" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="loans" name="Total Loans" fill="#23649b" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -170,13 +186,13 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Circulation Activity */}
-        <div className="lg:col-span-6 bg-white rounded-xl p-6 border border-slate-200/80 shadow-xs flex flex-col">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="lg:col-span-6 bg-white rounded-xl p-6 border border-stone-200/90 shadow-soft flex flex-col">
+          <div className="flex items-center justify-between pb-4 border-b border-stone-100">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <h3 className="text-sm font-semibold text-slate-900">Recent Borrowing Activity</h3>
+              <CheckCircle2 className="w-4 h-4 text-emerald-700 stroke-[1.8]" />
+              <h3 className="text-sm font-bold text-stone-900 tracking-tight">Recent Circulation Log</h3>
             </div>
-            <Link to="/loans" className="text-xs text-indigo-600 hover:text-indigo-700 font-medium">
+            <Link to="/loans" className="text-xs text-brand-700 hover:text-brand-900 font-semibold tracking-tight transition-colors">
               View All Loans &rarr;
             </Link>
           </div>
@@ -185,31 +201,31 @@ export const Dashboard: React.FC = () => {
             {loansLoading ? (
               <Spinner size="sm" />
             ) : !recentLoans || recentLoans.length === 0 ? (
-              <p className="text-xs text-slate-400 text-center py-10">No recent loans found.</p>
+              <p className="text-xs text-stone-400 text-center py-10">No recent loans found.</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-slate-100 text-slate-400 font-semibold uppercase tracking-wider">
+                    <tr className="border-b border-stone-100 text-stone-500 font-semibold tracking-tight">
                       <th className="pb-2.5 font-medium">Student</th>
                       <th className="pb-2.5 font-medium">Book</th>
                       <th className="pb-2.5 font-medium">Borrowed</th>
-                      <th className="pb-2.5 font-medium">Due</th>
+                      <th className="pb-2.5 font-medium">Due Date</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-700">
+                  <tbody className="divide-y divide-stone-100 text-stone-700">
                     {recentLoans.map((loan, idx) => (
-                      <tr key={idx} className="hover:bg-slate-50/60 transition-colors">
-                        <td className="py-2.5 font-medium text-slate-900 truncate max-w-[130px]">
+                      <tr key={idx} className="hover:bg-stone-50/70 transition-colors">
+                        <td className="py-2.5 font-semibold text-stone-900 truncate max-w-[130px]">
                           {loan.studentName}
                         </td>
-                        <td className="py-2.5 text-slate-600 truncate max-w-[160px]">
+                        <td className="py-2.5 text-stone-600 truncate max-w-[160px]">
                           {loan.bookTitle}
                         </td>
-                        <td className="py-2.5 text-slate-500 whitespace-nowrap">
+                        <td className="py-2.5 text-stone-500 whitespace-nowrap font-mono tabular-nums text-[11px]">
                           {formatDate(loan.borrowedDate)}
                         </td>
-                        <td className="py-2.5 text-slate-500 whitespace-nowrap">
+                        <td className="py-2.5 text-stone-500 whitespace-nowrap font-mono tabular-nums text-[11px]">
                           {formatDate(loan.dueDate)}
                         </td>
                       </tr>

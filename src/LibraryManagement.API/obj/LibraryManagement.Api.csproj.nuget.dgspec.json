@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SchoolLibrary\\src\\LibraryManagement.Api\\LibraryManagement.Api.csproj": {}
+    "D:\\SchoolLibrary\\src\\LibraryManagement.API\\LibraryManagement.API.csproj": {}
   },
   "projects": {
-    "D:\\SchoolLibrary\\src\\LibraryManagement.Api\\LibraryManagement.Api.csproj": {
+    "D:\\SchoolLibrary\\src\\LibraryManagement.API\\LibraryManagement.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SchoolLibrary\\src\\LibraryManagement.Api\\LibraryManagement.Api.csproj",
-        "projectName": "LibraryManagement.Api",
-        "projectPath": "D:\\SchoolLibrary\\src\\LibraryManagement.Api\\LibraryManagement.Api.csproj",
+        "projectUniqueName": "D:\\SchoolLibrary\\src\\LibraryManagement.API\\LibraryManagement.API.csproj",
+        "projectName": "LibraryManagement.API",
+        "projectPath": "D:\\SchoolLibrary\\src\\LibraryManagement.API\\LibraryManagement.API.csproj",
         "packagesPath": "C:\\Users\\bises\\.nuget\\packages\\",
-        "outputPath": "D:\\SchoolLibrary\\src\\LibraryManagement.Api\\obj\\",
+        "outputPath": "D:\\SchoolLibrary\\src\\LibraryManagement.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

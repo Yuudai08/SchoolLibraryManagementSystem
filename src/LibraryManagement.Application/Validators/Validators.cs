@@ -36,6 +36,18 @@ public class CreateBookRequestValidator : AbstractValidator<CreateBookRequest>
             .MaximumLength(20).WithMessage("ISBN must not exceed 20 characters.")
             .When(x => !string.IsNullOrEmpty(x.ISBN));
 
+        RuleFor(x => x.Publisher)
+            .MaximumLength(100).WithMessage("Publisher must not exceed 100 characters.")
+            .When(x => !string.IsNullOrEmpty(x.Publisher));
+
+        RuleFor(x => x.PublicationYear)
+            .InclusiveBetween(1000, 2100).WithMessage("Publication year must be between 1000 and 2100.")
+            .When(x => x.PublicationYear.HasValue);
+
+        RuleFor(x => x.Description)
+            .MaximumLength(4000).WithMessage("Description must not exceed 4,000 characters.")
+            .When(x => !string.IsNullOrEmpty(x.Description));
+
         RuleFor(x => x.CategoryId)
             .GreaterThan(0).WithMessage("Category is required.");
 
@@ -63,6 +75,18 @@ public class UpdateBookRequestValidator : AbstractValidator<UpdateBookRequest>
         RuleFor(x => x.ISBN)
             .MaximumLength(20).WithMessage("ISBN must not exceed 20 characters.")
             .When(x => !string.IsNullOrEmpty(x.ISBN));
+
+        RuleFor(x => x.Publisher)
+            .MaximumLength(100).WithMessage("Publisher must not exceed 100 characters.")
+            .When(x => !string.IsNullOrEmpty(x.Publisher));
+
+        RuleFor(x => x.PublicationYear)
+            .InclusiveBetween(1000, 2100).WithMessage("Publication year must be between 1000 and 2100.")
+            .When(x => x.PublicationYear.HasValue);
+
+        RuleFor(x => x.Description)
+            .MaximumLength(4000).WithMessage("Description must not exceed 4,000 characters.")
+            .When(x => !string.IsNullOrEmpty(x.Description));
 
         RuleFor(x => x.CategoryId)
             .GreaterThan(0).WithMessage("Category is required.");

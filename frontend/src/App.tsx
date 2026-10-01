@@ -16,6 +16,7 @@ import { LoanList } from './pages/loans/LoanList';
 import { FineList } from './pages/fines/FineList';
 import { CategoryList } from './pages/categories/CategoryList';
 import { ReportsDashboard } from './pages/reports/ReportsDashboard';
+import { NotFound } from './pages/NotFound';
 
 // Configure TanStack Query Client
 const queryClient = new QueryClient({
@@ -74,11 +75,10 @@ export const App: React.FC = () => {
                 <Route path="/fines" element={<FineList />} />
                 <Route path="/categories" element={<CategoryList />} />
                 <Route path="/reports" element={<ReportsDashboard />} />
+                {/* Catch-all 404 within layout */}
+                <Route path="*" element={<NotFound />} />
               </Route>
             </Route>
-
-            {/* Catch-all redirect */}
-            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

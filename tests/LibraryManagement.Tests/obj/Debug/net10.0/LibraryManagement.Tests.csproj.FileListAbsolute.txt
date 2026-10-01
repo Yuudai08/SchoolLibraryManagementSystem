@@ -172,3 +172,4 @@ D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Swashbuckle.Asp
 D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\LibraryManagement.API.dll
 D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\LibraryManagement.API.pdb
+D:\SchoolLibrary\tests\LibraryManagement.Tests\obj\Debug\net10.0\LibraryManagement.Tests.sourcelink.json

@@ -22,28 +22,28 @@ export const Badge: React.FC<BadgeProps> = ({
   size = 'md',
 }) => {
   const variantStyles: Record<BadgeVariant, string> = {
-    success: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
-    warning: 'bg-amber-50 text-amber-700 border-amber-200/80',
-    danger: 'bg-rose-50 text-rose-700 border-rose-200/80',
-    info: 'bg-sky-50 text-sky-700 border-sky-200/80',
-    neutral: 'bg-slate-100 text-slate-700 border-slate-200',
-    purple: 'bg-indigo-50 text-indigo-700 border-indigo-200/80',
+    success: 'bg-emerald-50/80 text-emerald-800 border-emerald-200/90 shadow-[0_1px_2px_rgba(16,185,129,0.06)]',
+    warning: 'bg-amber-50/80 text-amber-800 border-amber-200/90 shadow-[0_1px_2px_rgba(245,158,11,0.06)]',
+    danger: 'bg-rose-50/80 text-rose-800 border-rose-200/90 shadow-[0_1px_2px_rgba(244,63,94,0.06)]',
+    info: 'bg-brand-50 text-brand-800 border-brand-200/90 shadow-[0_1px_2px_rgba(43,108,176,0.06)]',
+    neutral: 'bg-stone-100/80 text-stone-700 border-stone-200/90 shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
+    purple: 'bg-violet-50/80 text-violet-800 border-violet-200/90 shadow-[0_1px_2px_rgba(139,92,246,0.06)]',
   };
 
-  const sizeStyles = size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-1 text-xs font-medium';
+  const sizeStyles = size === 'sm' ? 'px-2 py-0.5 text-[11px] font-medium' : 'px-2.5 py-1 text-xs font-semibold';
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border ${variantStyles[variant]} ${sizeStyles} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-md border tracking-tight transition-colors ${variantStyles[variant]} ${sizeStyles} ${className}`}
     >
-      <span className={`w-1.5 h-1.5 rounded-full ${
-        variant === 'success' ? 'bg-emerald-500' :
-        variant === 'warning' ? 'bg-amber-500' :
-        variant === 'danger' ? 'bg-rose-500' :
-        variant === 'info' ? 'bg-sky-500' :
-        variant === 'purple' ? 'bg-indigo-500' : 'bg-slate-400'
+      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+        variant === 'success' ? 'bg-emerald-500 ring-2 ring-emerald-200/60' :
+        variant === 'warning' ? 'bg-amber-500 ring-2 ring-amber-200/60' :
+        variant === 'danger' ? 'bg-rose-500 ring-2 ring-rose-200/60' :
+        variant === 'info' ? 'bg-brand-500 ring-2 ring-brand-200/60' :
+        variant === 'purple' ? 'bg-violet-500 ring-2 ring-violet-200/60' : 'bg-stone-400 ring-2 ring-stone-200/60'
       }`} />
-      {children}
+      <span>{children}</span>
     </span>
   );
 };

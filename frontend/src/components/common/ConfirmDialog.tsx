@@ -28,11 +28,13 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} maxWidth="sm">
-      <div className="flex items-start gap-4">
-        <div className={`p-2.5 rounded-full shrink-0 ${variant === 'danger' ? 'bg-rose-100 text-rose-600' : 'bg-indigo-100 text-indigo-600'}`}>
-          <AlertTriangle className="w-5 h-5" />
+      <div className="flex items-start gap-3.5">
+        <div className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center border shadow-soft ${
+          variant === 'danger' ? 'bg-rose-50 text-rose-700 border-rose-200/90' : 'bg-brand-50 text-brand-800 border-brand-200/90'
+        }`}>
+          <AlertTriangle className="w-5 h-5 stroke-[1.8]" />
         </div>
-        <div className="text-sm text-slate-600 leading-relaxed">
+        <div className="text-xs text-stone-600 leading-relaxed pt-1">
           {message}
         </div>
       </div>

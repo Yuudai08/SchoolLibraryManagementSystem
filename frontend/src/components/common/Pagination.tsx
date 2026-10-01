@@ -22,31 +22,57 @@ export const Pagination: React.FC<PaginationProps> = ({
   const endItem = Math.min(currentPage * pageSize, totalCount);
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-slate-200 sm:px-6">
+    <div className="flex items-center justify-between px-4 py-3 bg-white border-t border-stone-200/90 sm:px-6">
+      {/* Mobile view controls */}
+      <div className="flex items-center justify-between w-full sm:hidden">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage <= 1}
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-stone-300 bg-white text-xs font-medium text-stone-700 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft"
+        >
+          <ChevronLeft className="h-3.5 w-3.5" />
+          <span>Previous</span>
+        </button>
+        <span className="text-xs text-stone-600 font-medium tabular-nums">
+          {currentPage} / {totalPages}
+        </span>
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage >= totalPages}
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-stone-300 bg-white text-xs font-medium text-stone-700 hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft"
+        >
+          <span>Next</span>
+          <ChevronRight className="h-3.5 w-3.5" />
+        </button>
+      </div>
+
+      {/* Desktop view controls */}
       <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs text-slate-600">
-            Showing <span className="font-semibold text-slate-900">{startItem}</span> to{' '}
-            <span className="font-semibold text-slate-900">{endItem}</span> of{' '}
-            <span className="font-semibold text-slate-900">{totalCount}</span> results
+          <p className="text-xs text-stone-600">
+            Showing <span className="font-semibold text-stone-900 tabular-nums">{startItem}</span> to{' '}
+            <span className="font-semibold text-stone-900 tabular-nums">{endItem}</span> of{' '}
+            <span className="font-semibold text-stone-900 tabular-nums">{totalCount}</span> results
           </p>
         </div>
         <div>
-          <nav className="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+          <nav className="inline-flex items-center gap-1" aria-label="Pagination">
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage <= 1}
-              className="relative inline-flex items-center px-2 py-1.5 rounded-l-md border border-slate-300 bg-white text-xs font-medium text-slate-500 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="p-1.5 rounded-lg border border-stone-300/80 bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-900 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft transition-colors cursor-pointer"
+              title="Previous Page"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <span className="relative inline-flex items-center px-3.5 py-1.5 border border-slate-300 bg-white text-xs font-medium text-slate-700">
+            <span className="px-3 py-1 text-xs font-medium text-stone-700 bg-stone-100/70 rounded-lg border border-stone-200/80 tabular-nums">
               Page {currentPage} of {totalPages}
             </span>
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage >= totalPages}
-              className="relative inline-flex items-center px-2 py-1.5 rounded-r-md border border-slate-300 bg-white text-xs font-medium text-slate-500 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="p-1.5 rounded-lg border border-stone-300/80 bg-white text-stone-600 hover:bg-stone-50 hover:text-stone-900 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft transition-colors cursor-pointer"
+              title="Next Page"
             >
               <ChevronRight className="h-4 w-4" />
             </button>

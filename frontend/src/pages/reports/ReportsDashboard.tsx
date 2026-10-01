@@ -14,6 +14,7 @@ import { formatDate, formatCurrency, exportToCsv } from '../../utils/formatters'
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
 import { Spinner } from '../../components/common/Spinner';
+import { TableSkeleton } from '../../components/common/Skeleton';
 import { EmptyState } from '../../components/common/EmptyState';
 import {
   ResponsiveContainer,
@@ -87,7 +88,7 @@ export const ReportsDashboard: React.FC = () => {
   ] as const;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-200">
       {/* Top Action Bar (hidden on print) */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
         {/* Navigation Tabs */}
@@ -99,14 +100,14 @@ export const ReportsDashboard: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-xs'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                    ? 'bg-brand-900 text-white shadow-soft'
+                    : 'bg-white text-stone-600 hover:bg-stone-50 border border-stone-200/90'
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{tab.label}</span>
+                <Icon className="w-3.5 h-3.5 stroke-[1.8]" />
+                <span className="tracking-tight">{tab.label}</span>
               </button>
             );
           })}
@@ -120,7 +121,7 @@ export const ReportsDashboard: React.FC = () => {
             onClick={handleExportCsv}
             leftIcon={<Download className="w-4 h-4" />}
           >
-            Export to CSV
+            Export CSV
           </Button>
           <Button
             variant="outline"
@@ -128,15 +129,15 @@ export const ReportsDashboard: React.FC = () => {
             onClick={handlePrint}
             leftIcon={<Printer className="w-4 h-4" />}
           >
-            Print Report
+            Print
           </Button>
         </div>
       </div>
 
       {/* Printable Report Header */}
       <div className="hidden print-only mb-6">
-        <h1 className="text-xl font-bold">School Library Management System</h1>
-        <p className="text-xs text-slate-500">
+        <h1 className="text-xl font-bold text-stone-900">Oakridge Academy &bull; Library Information System</h1>
+        <p className="text-xs text-stone-500 font-mono mt-1">
           Official Report: {tabs.find((t) => t.id === activeTab)?.label} &bull; Generated {new Date().toLocaleString()}
         </p>
       </div>
@@ -144,20 +145,20 @@ export const ReportsDashboard: React.FC = () => {
       {/* TAB 1: INVENTORY REPORT */}
       {activeTab === 'inventory' && (
         <div className="space-y-6">
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-            <div className="p-5 border-b border-slate-100">
-              <h3 className="text-sm font-semibold text-slate-900">Book Inventory & Availability Status</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Catalog breakdown of total, available, and borrowed copies</p>
+          <div className="bg-white rounded-2xl border border-stone-200/90 shadow-card overflow-hidden">
+            <div className="p-5 border-b border-stone-100">
+              <h3 className="text-sm font-bold text-stone-900 tracking-tight">Catalog Inventory & Circulation Availability</h3>
+              <p className="text-xs text-stone-500 mt-0.5">Physical copies, borrowed balances, and on-shelf percentage</p>
             </div>
 
             {inventoryLoading ? (
-              <Spinner size="lg" label="Loading inventory report..." className="h-64" />
+              <TableSkeleton rows={8} cols={7} />
             ) : !inventoryData || inventoryData.length === 0 ? (
               <EmptyState icon={BookOpen} title="No Inventory Data" description="No books in library database." />
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 text-slate-600 font-semibold uppercase tracking-wider border-b border-slate-200">
+                  <thead className="bg-stone-50/70 text-stone-600 font-semibold tracking-tight border-b border-stone-200/80">
                     <tr>
                       <th className="px-5 py-3">Book Title</th>
                       <th className="px-5 py-3">Author</th>
@@ -168,7 +169,7 @@ export const ReportsDashboard: React.FC = () => {
                       <th className="px-5 py-3">Availability</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 text-slate-700">
+                  <tbody className="divide-y divide-stone-100 text-stone-700">
                     {inventoryData.map((item, idx) => {
                       const availPct = Math.round((item.availableCopies / (item.totalCopies || 1)) * 100);
                       return (

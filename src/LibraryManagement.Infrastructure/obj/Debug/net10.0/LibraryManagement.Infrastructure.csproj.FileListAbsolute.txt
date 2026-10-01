@@ -17,3 +17,4 @@ D:\SchoolLibrary\src\LibraryManagement.Infrastructure\obj\Debug\net10.0\refint\L
 D:\SchoolLibrary\src\LibraryManagement.Infrastructure\obj\Debug\net10.0\LibraryManagement.Infrastructure.pdb
 D:\SchoolLibrary\src\LibraryManagement.Infrastructure\obj\Debug\net10.0\LibraryManagement.Infrastructure.genruntimeconfig.cache
 D:\SchoolLibrary\src\LibraryManagement.Infrastructure\obj\Debug\net10.0\ref\LibraryManagement.Infrastructure.dll
+D:\SchoolLibrary\src\LibraryManagement.Infrastructure\obj\Debug\net10.0\LibraryManagement.Infrastructure.sourcelink.json

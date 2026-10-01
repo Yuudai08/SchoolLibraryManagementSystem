@@ -9,6 +9,7 @@ import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
 import { Pagination } from '../../components/common/Pagination';
 import { Spinner } from '../../components/common/Spinner';
+import { TableSkeleton } from '../../components/common/Skeleton';
 import { EmptyState } from '../../components/common/EmptyState';
 import { Modal } from '../../components/common/Modal';
 import { getErrorMessage } from '../../api/client';
@@ -68,7 +69,7 @@ export const LoanList: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Tabs navigation */}
-      <div className="border-b border-slate-200">
+      <div className="border-b border-stone-200/90">
         <nav className="-mb-px flex space-x-6">
           {tabs.map((tab) => (
             <button
@@ -78,10 +79,10 @@ export const LoanList: React.FC = () => {
                 setActiveTab(tab.id);
                 setPage(1);
               }}
-              className={`pb-3 px-1 border-b-2 font-medium text-xs tracking-tight transition-colors ${
+              className={`pb-3 px-1 border-b-2 font-semibold text-xs tracking-tight transition-colors cursor-pointer ${
                 activeTab === tab.id
-                  ? 'border-indigo-600 text-indigo-600 font-semibold'
-                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                  ? 'border-brand-700 text-brand-700'
+                  : 'border-transparent text-stone-500 hover:text-stone-800 hover:border-stone-300'
               }`}
             >
               {tab.label}
@@ -91,9 +92,9 @@ export const LoanList: React.FC = () => {
       </div>
 
       {/* Loans Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200/90 shadow-card overflow-hidden">
         {isLoading ? (
-          <Spinner size="lg" label="Loading loan records..." className="h-64" />
+          <TableSkeleton rows={8} cols={7} />
         ) : !pagedLoans || !pagedLoans.items || pagedLoans.items.length === 0 ? (
           <EmptyState
             icon={Clock}
@@ -104,7 +105,7 @@ export const LoanList: React.FC = () => {
           <>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50/80 text-slate-600 font-semibold uppercase tracking-wider border-b border-slate-200">
+                <thead className="bg-stone-50/70 text-stone-600 font-semibold tracking-tight border-b border-stone-200/80">
                   <tr>
                     <th className="px-5 py-3">Book Info</th>
                     <th className="px-5 py-3">Student Patron</th>
@@ -116,30 +117,30 @@ export const LoanList: React.FC = () => {
                     <th className="px-5 py-3 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-700">
+                <tbody className="divide-y divide-stone-100 text-stone-700">
                   {pagedLoans.items.map((loan) => {
                     const isOverdue = loan.status === 'Overdue' || (typeof loan.daysOverdue === 'number' && loan.daysOverdue > 0);
                     const canReturn = loan.status !== 'Returned';
 
                     return (
-                      <tr key={loan.loanId} className="hover:bg-slate-50/60 transition-colors">
+                      <tr key={loan.loanId} className="hover:bg-stone-50/60 transition-colors">
                         <td className="px-5 py-3.5">
-                          <p className="font-semibold text-slate-900 text-sm">{loan.bookTitle}</p>
-                          <p className="text-slate-500 text-xs">{loan.bookAuthor}</p>
+                          <p className="font-bold text-stone-900 text-sm tracking-tight">{loan.bookTitle}</p>
+                          <p className="text-stone-500 text-xs mt-0.5">{loan.bookAuthor}</p>
                         </td>
                         <td className="px-5 py-3.5">
-                          <p className="font-medium text-slate-900">{loan.studentName}</p>
-                          <p className="text-slate-400 font-mono text-[11px]">{loan.studentNumber}</p>
+                          <p className="font-bold text-stone-900 tracking-tight">{loan.studentName}</p>
+                          <p className="text-stone-400 font-mono tabular-nums text-[11px]">{loan.studentNumber}</p>
                         </td>
-                        <td className="px-5 py-3.5 text-slate-600">
+                        <td className="px-5 py-3.5 text-stone-600 font-mono tabular-nums text-[11px]">
                           {formatDate(loan.borrowedDate)}
                         </td>
-                        <td className="px-5 py-3.5">
-                          <span className={isOverdue ? 'text-rose-600 font-semibold' : 'text-slate-600'}>
+                        <td className="px-5 py-3.5 font-mono tabular-nums text-[11px]">
+                          <span className={isOverdue ? 'text-rose-600 font-semibold' : 'text-stone-600'}>
                             {formatDate(loan.dueDate)}
                           </span>
                         </td>
-                        <td className="px-5 py-3.5 text-slate-500">
+                        <td className="px-5 py-3.5 text-stone-500 font-mono tabular-nums text-[11px]">
                           {loan.returnedDate ? formatDate(loan.returnedDate) : '—'}
                         </td>
                         <td className="px-5 py-3.5">
@@ -152,13 +153,13 @@ export const LoanList: React.FC = () => {
                             {isOverdue ? `Overdue (${loan.daysOverdue ?? 0}d)` : loan.status}
                           </Badge>
                         </td>
-                        <td className="px-5 py-3.5">
+                        <td className="px-5 py-3.5 font-mono tabular-nums text-[11px]">
                           {loan.currentFine && loan.currentFine > 0 ? (
                             <span className="font-semibold text-rose-600">
                               {formatCurrency(loan.currentFine)}
                             </span>
                           ) : (
-                            <span className="text-slate-400">—</span>
+                            <span className="text-stone-400">—</span>
                           )}
                         </td>
                         <td className="px-5 py-3.5 text-right">
@@ -172,7 +173,7 @@ export const LoanList: React.FC = () => {
                               Return
                             </Button>
                           ) : (
-                            <span className="text-xs text-slate-400 font-medium">Completed</span>
+                            <span className="text-xs text-stone-400 font-medium">Completed</span>
                           )}
                         </td>
                       </tr>
