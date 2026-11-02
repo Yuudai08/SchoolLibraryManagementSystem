@@ -23,6 +23,7 @@ public class FineQueryService(ISqlConnectionFactory connectionFactory) : IFineQu
                 f.Amount,
                 f.IsPaid,
                 f.PaidDate,
+                l.DueDate,
                 f.CreatedAt
             FROM Fines f
             INNER JOIN Loans l ON f.LoanId = l.LoanId
@@ -51,6 +52,7 @@ public class FineQueryService(ISqlConnectionFactory connectionFactory) : IFineQu
                 f.Amount,
                 f.IsPaid,
                 f.PaidDate,
+                l.DueDate,
                 f.CreatedAt
             FROM Fines f
             INNER JOIN Loans l ON f.LoanId = l.LoanId

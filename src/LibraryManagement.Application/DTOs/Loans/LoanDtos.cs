@@ -24,6 +24,8 @@ public record LoanResponse
     public string Status { get; init; } = string.Empty;
     public int? DaysOverdue { get; init; }
     public decimal? CurrentFine { get; init; }
+    public int? FineId { get; init; }
+    public bool? IsFinePaid { get; init; }
 }
 
 public record ReturnLoanResponse

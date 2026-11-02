@@ -55,7 +55,7 @@ export const Login: React.FC = () => {
           </div>
         </div>
         <h2 className="text-center text-2xl font-bold tracking-tight text-white">
-          Oakridge Academy
+          Triyog High School
         </h2>
         <p className="mt-1 text-center text-xs text-stone-400 font-mono tracking-wide">
           Library Management Information Portal
@@ -70,7 +70,7 @@ export const Login: React.FC = () => {
                 label="Librarian ID or Email"
                 type="email"
                 required
-                placeholder="librarian@oakridge.edu"
+                placeholder="librarian@triyog.edu.np"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 leftIcon={<Mail className="w-4 h-4" />}

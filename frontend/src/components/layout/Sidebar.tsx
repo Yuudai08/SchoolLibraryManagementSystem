@@ -54,7 +54,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <Library className="w-4.5 h-4.5" />
           </div>
           <div className="overflow-hidden">
-            <h1 className="text-xs font-bold text-stone-900 tracking-tight leading-none">Oakridge Academy</h1>
+            <h1 className="text-xs font-bold text-stone-900 tracking-tight leading-none">Triyog High School</h1>
             <p className="text-[10px] text-stone-500 mt-1 font-mono tracking-wide">Library System</p>
           </div>
         </div>
@@ -109,7 +109,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </div>
             <div className="overflow-hidden flex-1">
               <p className="text-xs font-semibold text-stone-800 truncate tracking-tight">{user?.fullName || 'Librarian'}</p>
-              <p className="text-[10px] text-stone-500 truncate font-mono">{user?.email || 'admin@oakridge'}</p>
+              <p className="text-[10px] text-stone-500 truncate font-mono">{user?.email || 'admin@triyog'}</p>
             </div>
           </div>
           <button

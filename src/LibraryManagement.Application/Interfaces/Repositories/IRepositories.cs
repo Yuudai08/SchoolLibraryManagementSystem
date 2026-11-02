@@ -46,11 +46,13 @@ public interface ILoanRepository
     Task UpdateAsync(Loan loan, CancellationToken cancellationToken = default);
     Task<int> GetActiveLoansCountAsync(int studentId, CancellationToken cancellationToken = default);
     Task<bool> HasActiveLoanForBookAsync(int studentId, int bookId, CancellationToken cancellationToken = default);
+    Task<List<Loan>> GetActiveOverdueLoansAsync(DateTime asOfDate, CancellationToken cancellationToken = default);
 }
 
 public interface IFineRepository
 {
     Task<Fine?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<Fine?> GetByLoanIdAsync(int loanId, CancellationToken cancellationToken = default);
     Task<Fine> CreateAsync(Fine fine, CancellationToken cancellationToken = default);
     Task UpdateAsync(Fine fine, CancellationToken cancellationToken = default);
 }

@@ -119,7 +119,7 @@ export const LoanList: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-stone-100 text-stone-700">
                   {pagedLoans.items.map((loan) => {
-                    const isOverdue = loan.status === 'Overdue' || (typeof loan.daysOverdue === 'number' && loan.daysOverdue > 0);
+                    const isOverdue = loan.status !== 'Returned' && (loan.status === 'Overdue' || (typeof loan.daysOverdue === 'number' && loan.daysOverdue > 0));
                     const canReturn = loan.status !== 'Returned';
 
                     return (
@@ -154,10 +154,30 @@ export const LoanList: React.FC = () => {
                           </Badge>
                         </td>
                         <td className="px-5 py-3.5 font-mono tabular-nums text-[11px]">
-                          {loan.currentFine && loan.currentFine > 0 ? (
-                            <span className="font-semibold text-rose-600">
-                              {formatCurrency(loan.currentFine)}
-                            </span>
+                          {loan.status === 'Returned' ? (
+                            loan.currentFine && loan.currentFine > 0 ? (
+                              loan.isFinePaid ? (
+                                <span className="font-semibold text-emerald-600">
+                                  {formatCurrency(loan.currentFine)} (Paid)
+                                </span>
+                              ) : (
+                                <span className="font-semibold text-rose-600">
+                                  {formatCurrency(loan.currentFine)} (Unpaid)
+                                </span>
+                              )
+                            ) : (
+                              <span className="text-stone-400">—</span>
+                            )
+                          ) : isOverdue ? (
+                            loan.isFinePaid ? (
+                              <span className="font-semibold text-emerald-600">
+                                {formatCurrency(loan.currentFine || 0)} (Paid)
+                              </span>
+                            ) : (
+                              <span className="font-semibold text-rose-600">
+                                {formatCurrency(loan.currentFine || 0)}
+                              </span>
+                            )
                           ) : (
                             <span className="text-stone-400">—</span>
                           )}

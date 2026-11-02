@@ -3,6 +3,7 @@ using LibraryManagement.Application.Configuration;
 using LibraryManagement.Application.DTOs.Common;
 using LibraryManagement.Application.DTOs.Loans;
 using LibraryManagement.Application.Interfaces.QueryServices;
+using LibraryManagement.Domain.Enums;
 using LibraryManagement.Infrastructure.Data;
 using Microsoft.Extensions.Options;
 
@@ -33,8 +34,23 @@ public class LoanQueryService(ISqlConnectionFactory connectionFactory, IOptions<
 
         if (searchParams.Status.HasValue)
         {
-            whereClauses.Add("l.Status = @Status");
-            parameters.Add("Status", (int)searchParams.Status.Value);
+            if (searchParams.Status.Value == LoanStatus.Overdue)
+            {
+                whereClauses.Add("(l.Status = 2 OR (l.Status = 0 AND l.DueDate < GETUTCDATE())) AND l.ReturnedDate IS NULL");
+            }
+            else if (searchParams.Status.Value == LoanStatus.Borrowed)
+            {
+                whereClauses.Add("l.Status = 0 AND l.ReturnedDate IS NULL AND l.DueDate >= GETUTCDATE()");
+            }
+            else if (searchParams.Status.Value == LoanStatus.Returned)
+            {
+                whereClauses.Add("l.ReturnedDate IS NOT NULL");
+            }
+            else
+            {
+                whereClauses.Add("l.Status = @Status");
+                parameters.Add("Status", (int)searchParams.Status.Value);
+            }
         }
 
         if (searchParams.OverdueOnly.HasValue && searchParams.OverdueOnly.Value)
@@ -66,25 +82,30 @@ public class LoanQueryService(ISqlConnectionFactory connectionFactory, IOptions<
                 l.BorrowedDate,
                 l.DueDate,
                 l.ReturnedDate,
-                CASE l.Status
-                    WHEN 0 THEN 'Borrowed'
-                    WHEN 1 THEN 'Returned'
-                    WHEN 2 THEN 'Overdue'
-                    ELSE 'Unknown'
+                CASE 
+                    WHEN l.ReturnedDate IS NOT NULL THEN 'Returned'
+                    WHEN GETUTCDATE() > l.DueDate THEN 'Overdue'
+                    ELSE 'Borrowed'
                 END AS Status,
                 CASE 
+                    WHEN l.ReturnedDate IS NOT NULL AND l.ReturnedDate > l.DueDate 
+                        THEN DATEDIFF(day, l.DueDate, l.ReturnedDate)
                     WHEN l.ReturnedDate IS NULL AND GETUTCDATE() > l.DueDate 
                         THEN DATEDIFF(day, l.DueDate, GETUTCDATE())
                     ELSE NULL 
                 END AS DaysOverdue,
                 CASE 
+                    WHEN f.FineId IS NOT NULL THEN f.Amount
                     WHEN l.ReturnedDate IS NULL AND GETUTCDATE() > l.DueDate 
                         THEN (DATEDIFF(day, l.DueDate, GETUTCDATE()) * @FinePerDay)
                     ELSE NULL 
-                END AS CurrentFine
+                END AS CurrentFine,
+                f.FineId,
+                f.IsPaid AS IsFinePaid
             FROM Loans l
             INNER JOIN Students s ON l.StudentId = s.StudentId
             INNER JOIN Books b ON l.BookId = b.BookId
+            LEFT JOIN Fines f ON l.LoanId = f.LoanId
             {whereSql}
             ORDER BY l.BorrowedDate DESC
             OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
@@ -117,25 +138,30 @@ public class LoanQueryService(ISqlConnectionFactory connectionFactory, IOptions<
                 l.BorrowedDate,
                 l.DueDate,
                 l.ReturnedDate,
-                CASE l.Status
-                    WHEN 0 THEN 'Borrowed'
-                    WHEN 1 THEN 'Returned'
-                    WHEN 2 THEN 'Overdue'
-                    ELSE 'Unknown'
+                CASE 
+                    WHEN l.ReturnedDate IS NOT NULL THEN 'Returned'
+                    WHEN GETUTCDATE() > l.DueDate THEN 'Overdue'
+                    ELSE 'Borrowed'
                 END AS Status,
                 CASE 
+                    WHEN l.ReturnedDate IS NOT NULL AND l.ReturnedDate > l.DueDate 
+                        THEN DATEDIFF(day, l.DueDate, l.ReturnedDate)
                     WHEN l.ReturnedDate IS NULL AND GETUTCDATE() > l.DueDate 
                         THEN DATEDIFF(day, l.DueDate, GETUTCDATE())
                     ELSE NULL 
                 END AS DaysOverdue,
                 CASE 
+                    WHEN f.FineId IS NOT NULL THEN f.Amount
                     WHEN l.ReturnedDate IS NULL AND GETUTCDATE() > l.DueDate 
                         THEN (DATEDIFF(day, l.DueDate, GETUTCDATE()) * @FinePerDay)
                     ELSE NULL 
-                END AS CurrentFine
+                END AS CurrentFine,
+                f.FineId,
+                f.IsPaid AS IsFinePaid
             FROM Loans l
             INNER JOIN Students s ON l.StudentId = s.StudentId
             INNER JOIN Books b ON l.BookId = b.BookId
+            LEFT JOIN Fines f ON l.LoanId = f.LoanId
             WHERE l.StudentId = @StudentId AND l.ReturnedDate IS NULL
             ORDER BY l.DueDate ASC";
 
@@ -161,11 +187,10 @@ public class LoanQueryService(ISqlConnectionFactory connectionFactory, IOptions<
                 l.BorrowedDate,
                 l.DueDate,
                 l.ReturnedDate,
-                CASE l.Status
-                    WHEN 0 THEN 'Borrowed'
-                    WHEN 1 THEN 'Returned'
-                    WHEN 2 THEN 'Overdue'
-                    ELSE 'Unknown'
+                CASE 
+                    WHEN l.ReturnedDate IS NOT NULL THEN 'Returned'
+                    WHEN GETUTCDATE() > l.DueDate THEN 'Overdue'
+                    ELSE 'Borrowed'
                 END AS Status,
                 CASE 
                     WHEN l.ReturnedDate IS NOT NULL AND l.ReturnedDate > l.DueDate 
@@ -174,7 +199,14 @@ public class LoanQueryService(ISqlConnectionFactory connectionFactory, IOptions<
                         THEN DATEDIFF(day, l.DueDate, GETUTCDATE())
                     ELSE NULL 
                 END AS DaysOverdue,
-                f.Amount AS CurrentFine
+                CASE 
+                    WHEN f.FineId IS NOT NULL THEN f.Amount
+                    WHEN l.ReturnedDate IS NULL AND GETUTCDATE() > l.DueDate 
+                        THEN (DATEDIFF(day, l.DueDate, GETUTCDATE()) * @FinePerDay)
+                    ELSE NULL 
+                END AS CurrentFine,
+                f.FineId,
+                f.IsPaid AS IsFinePaid
             FROM Loans l
             INNER JOIN Students s ON l.StudentId = s.StudentId
             INNER JOIN Books b ON l.BookId = b.BookId
@@ -183,7 +215,7 @@ public class LoanQueryService(ISqlConnectionFactory connectionFactory, IOptions<
             ORDER BY l.BorrowedDate DESC";
 
         var items = await connection.QueryAsync<LoanResponse>(
-            new CommandDefinition(sql, new { StudentId = studentId }, cancellationToken: cancellationToken));
+            new CommandDefinition(sql, new { StudentId = studentId, FinePerDay = _settings.FinePerDay }, cancellationToken: cancellationToken));
 
         return items.ToList();
     }

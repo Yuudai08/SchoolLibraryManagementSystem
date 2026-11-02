@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -53,6 +55,7 @@ export const App: React.FC = () => {
               },
               error: {
                 iconTheme: {
+                  
                   primary: '#ef4444',
                   secondary: '#fff',
                 },

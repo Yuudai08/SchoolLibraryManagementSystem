@@ -189,6 +189,8 @@ export interface Loan {
   status: LoanStatus;
   daysOverdue?: number;
   currentFine?: number;
+  fineId?: number;
+  isFinePaid?: boolean;
 }
 
 export interface CreateLoanRequest {
@@ -224,6 +226,7 @@ export interface Fine {
   amount: number;
   isPaid: boolean;
   paidDate?: string;
+  dueDate: string;
   createdAt: string;
 }
 

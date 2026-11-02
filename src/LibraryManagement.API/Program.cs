@@ -1,6 +1,7 @@
 using LibraryManagement.API.Middleware;
 using LibraryManagement.Application;
 using LibraryManagement.Application.Configuration;
+using LibraryManagement.Application.Interfaces.Services;
 using LibraryManagement.Infrastructure;
 using LibraryManagement.Infrastructure.Data;
 using LibraryManagement.Infrastructure.Data.Seed;
@@ -111,6 +112,9 @@ try
 
     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
     await seeder.SeedAsync();
+
+    var fineService = scope.ServiceProvider.GetRequiredService<IFineService>();
+    await fineService.SyncOverdueFinesAsync();
 }
 catch (Exception ex)
 {

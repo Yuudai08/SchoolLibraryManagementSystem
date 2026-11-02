@@ -173,3 +173,14 @@ D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Swashbuckle.Asp
 D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\LibraryManagement.API.dll
 D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\LibraryManagement.API.pdb
 D:\SchoolLibrary\tests\LibraryManagement.Tests\obj\Debug\net10.0\LibraryManagement.Tests.sourcelink.json
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.Caching.Memory.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.Configuration.Abstractions.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.DependencyInjection.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.Logging.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.Options.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\Microsoft.Extensions.Primitives.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\System.Security.Cryptography.Pkcs.dll
+D:\SchoolLibrary\tests\LibraryManagement.Tests\bin\Debug\net10.0\runtimes\win\lib\net10.0\System.Security.Cryptography.Pkcs.dll

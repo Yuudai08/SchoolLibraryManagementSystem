@@ -136,7 +136,7 @@ export const ReportsDashboard: React.FC = () => {
 
       {/* Printable Report Header */}
       <div className="hidden print-only mb-6">
-        <h1 className="text-xl font-bold text-stone-900">Oakridge Academy &bull; Library Information System</h1>
+        <h1 className="text-xl font-bold text-stone-900">Triyog High School &bull; Library Information System</h1>
         <p className="text-xs text-stone-500 font-mono mt-1">
           Official Report: {tabs.find((t) => t.id === activeTab)?.label} &bull; Generated {new Date().toLocaleString()}
         </p>

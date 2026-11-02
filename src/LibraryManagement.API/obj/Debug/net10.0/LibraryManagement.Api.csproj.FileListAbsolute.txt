@@ -178,4 +178,3 @@ D:\SchoolLibrary\src\LibraryManagement.API\obj\Debug\net10.0\LibraryManagement.A
 D:\SchoolLibrary\src\LibraryManagement.API\obj\Debug\net10.0\ref\LibraryManagement.API.dll
 D:\SchoolLibrary\src\LibraryManagement.API\obj\Debug\net10.0\LibraryManagement.API.sourcelink.json
 D:\SchoolLibrary\src\LibraryManagement.Api\obj\Debug\net10.0\LibraryM.8EC52CA8.Up2Date
-D:\SchoolLibrary\src\LibraryManagement.API\obj\Debug\net10.0\LibraryM.80653088.Up2Date

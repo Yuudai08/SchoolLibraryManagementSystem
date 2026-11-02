@@ -149,19 +149,31 @@ public class LoanService(
             book.UpdatedAt = returnDate;
             await bookRepository.UpdateAsync(book, cancellationToken);
 
-            // 5. Create fine if overdue
+            // 5. Update existing fine or create fine if overdue
             if (fineAmount > 0)
             {
-                var fine = new Fine
+                var existingFine = loan.Fine ?? await fineRepository.GetByLoanIdAsync(loanId, cancellationToken);
+                if (existingFine != null)
                 {
-                    LoanId = loanId,
-                    Amount = fineAmount,
-                    IsPaid = false,
-                    CreatedAt = returnDate
-                };
+                    if (!existingFine.IsPaid)
+                    {
+                        existingFine.Amount = fineAmount;
+                        await fineRepository.UpdateAsync(existingFine, cancellationToken);
+                    }
+                }
+                else
+                {
+                    var fine = new Fine
+                    {
+                        LoanId = loanId,
+                        Amount = fineAmount,
+                        IsPaid = false,
+                        CreatedAt = returnDate
+                    };
 
-                await fineRepository.CreateAsync(fine, cancellationToken);
-                logger.LogInformation("Fine created: Rs. {Amount} for Loan {LoanId}", fineAmount, loanId);
+                    await fineRepository.CreateAsync(fine, cancellationToken);
+                }
+                logger.LogInformation("Fine created/updated: Rs. {Amount} for Loan {LoanId}", fineAmount, loanId);
             }
 
             await unitOfWork.CommitTransactionAsync(cancellationToken);

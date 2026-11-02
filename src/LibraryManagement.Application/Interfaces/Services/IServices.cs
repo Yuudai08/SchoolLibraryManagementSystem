@@ -57,6 +57,7 @@ public interface IFineService
     Task<List<FineResponse>> GetAllAsync(bool? unpaidOnly = null, CancellationToken cancellationToken = default);
     Task<FineResponse?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     Task PayFineAsync(int fineId, CancellationToken cancellationToken = default);
+    Task SyncOverdueFinesAsync(CancellationToken cancellationToken = default);
 }
 
 public interface IDashboardService

@@ -10,5 +10,6 @@ public record FineResponse
     public decimal Amount { get; init; }
     public bool IsPaid { get; init; }
     public DateTime? PaidDate { get; init; }
+    public DateTime DueDate { get; init; }
     public DateTime CreatedAt { get; init; }
 }

@@ -31,9 +31,13 @@ public class JwtTokenGenerator(
             new(ClaimTypes.Role, "Librarian")
         };
 
+        var now = _timeProvider.GetUtcNow().UtcDateTime;
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
+            NotBefore = now,
+            IssuedAt = now,
             Expires = GetExpiration(),
             Issuer = _jwtSettings.Issuer,
             Audience = _jwtSettings.Audience,

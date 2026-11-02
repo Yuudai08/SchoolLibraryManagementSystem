@@ -40,4 +40,14 @@ public class LoanRepository(LibraryDbContext context) : ILoanRepository
         return await context.Loans
             .AnyAsync(l => l.StudentId == studentId && l.BookId == bookId && (l.Status == LoanStatus.Borrowed || l.Status == LoanStatus.Overdue), cancellationToken);
     }
+
+    public async Task<List<Loan>> GetActiveOverdueLoansAsync(DateTime asOfDate, CancellationToken cancellationToken = default)
+    {
+        return await context.Loans
+            .Include(l => l.Fine)
+            .Include(l => l.Book)
+            .Include(l => l.Student)
+            .Where(l => l.ReturnedDate == null && l.DueDate < asOfDate)
+            .ToListAsync(cancellationToken);
+    }
 }
